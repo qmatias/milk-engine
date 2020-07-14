@@ -1,0 +1,84 @@
+{{#*inline "page"}}
+    <section class="section">
+        <div class="container">
+            <h1 class="title">
+                Welcome to the CumShop&trade;
+            </h1>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <div>
+                            <h1 class="title is-spaced">
+                                {{ category.pretty_name }}
+                            </h1>
+                            <h2 class="subtitle">
+                                {{ category.description }}
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <nav class="breadcrumb is-large" aria-label="breadcrumbs">
+                            <ul>
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/shop">Shop</a></li>
+                                <li class="is-active"><a aria-current="page"
+                                                         href="/shop/{{ category_uri }}">{{ category.pretty_name }}</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="columns is-multiline">
+                {{#each category.items}}
+                    <div class="column is-one-third">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-square">
+                                    {{#with image as | image |}}
+                                        <img src="/shop/{{ ../../category_uri }}/{{ image }}" alt="Cum Engine">
+                                    {{else}}
+                                        <img src="/404.png" alt="Missing Image">
+                                    {{/with}}
+                                </figure>
+                            </div>
+                            <header class="card-header">
+                                <p class="card-header-title subtitle">
+                                    {{ name }}
+                                </p>
+                            </header>
+                            <div class="card-content">
+                                <p class="itemDescription">{{ description }}</p>
+                                <p class="itemPrice">
+                                    <span class="itemNum">
+                                        {{ price }}
+                                    </span>
+                                    <span class="itemUnit">
+                                        {{#if (str_eq ../category.name "cum") }}
+                                            / {{ unit }}
+                                        {{/if}}
+                                    </span>
+                                </p>
+                            </div>
+                            <footer class="card-footer">
+                                <a class="card-footer-item">View More</a>
+                            </footer>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </section>
+{{/inline}}
+
+{{~> layout~}}
