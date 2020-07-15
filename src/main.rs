@@ -1,5 +1,5 @@
 #![feature(proc_macro_hygiene, decl_macro)]
-
+#[warn(clippy::all)]
 mod shop;
 
 #[macro_use]
@@ -14,7 +14,6 @@ extern crate serde_derive;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::handlebars::handlebars_helper;
 use rocket_contrib::templates::Template;
-use std::collections::HashMap;
 
 #[derive(Serialize)]
 struct TemplateContext {
@@ -87,8 +86,4 @@ fn main() {
         .register(catchers![not_found])
         .attach(template_engine)
         .launch();
-}
-
-fn empty_ctx() -> HashMap<(), ()> {
-    HashMap::new()
 }
