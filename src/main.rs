@@ -1,7 +1,5 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 #[warn(clippy::all)]
-mod shop;
-
 #[macro_use]
 extern crate rocket;
 
@@ -11,10 +9,11 @@ extern crate lazy_static;
 #[macro_use]
 extern crate serde_derive;
 
-use rocket::http::Status;
+mod shop;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::handlebars::handlebars_helper;
 use rocket_contrib::templates::Template;
+use shop::PRODUCTS;
 
 #[derive(Serialize)]
 struct TemplateContext {
@@ -73,6 +72,8 @@ fn internal_error() -> Template {
 
 fn main() {
     handlebars_helper!(str_eq: |x: str, y: str| x == y);
+
+    lazy_static::initialize(&PRODUCTS);
 
     let template_engine = Template::custom(|engines| {
         engines.handlebars.set_strict_mode(true);

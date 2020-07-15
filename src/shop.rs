@@ -5,30 +5,30 @@ use std::fs::File;
 use std::io::BufReader;
 
 lazy_static! {
-    static ref PRODUCTS: HashMap<String, Category> = load_products().unwrap();
+    pub static ref PRODUCTS: HashMap<String, Category> = load_products().unwrap();
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-struct Category {
-    pretty_name: String,
-    name: String,
-    description: String,
-    image: String,
+pub struct Category {
+    pub pretty_name: String,
+    pub name: String,
+    pub description: String,
+    pub image: String,
     #[serde(default)]
-    items: Vec<ShopItem>,
+    pub items: Vec<ShopItem>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-struct ShopItem {
-    name: String,
-    price: f64,
+pub struct ShopItem {
+    pub name: String,
+    pub price: f64,
     #[serde(default)]
-    horsepower: u32,
+    pub horsepower: u32,
     #[serde(default = "default_desc")]
-    description: String,
+    pub description: String,
     #[serde(default = "default_unit")]
-    unit: String,
-    image: Option<String>,
+    pub unit: String,
+    pub image: Option<String>,
 }
 
 fn default_desc() -> String {
