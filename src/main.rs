@@ -12,9 +12,7 @@ extern crate lazy_static;
 extern crate serde_derive;
 
 use rocket_contrib::serve::StaticFiles;
-use rocket_contrib::templates::handlebars::{
-    handlebars_helper, Helper, HelperResult, Output, RenderContext,
-};
+use rocket_contrib::templates::handlebars::handlebars_helper;
 use rocket_contrib::templates::Template;
 use std::collections::HashMap;
 

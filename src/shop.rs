@@ -1,4 +1,3 @@
-use crate::TemplateContext;
 use anyhow::{Context as ErrorContext, Result};
 use rocket_contrib::templates::Template;
 use std::collections::HashMap;
