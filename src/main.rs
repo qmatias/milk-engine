@@ -51,6 +51,16 @@ fn not_found() -> Template {
     )
 }
 
+#[catch(500)]
+fn server_error() -> Template {
+    Template::render(
+        "404",
+        TemplateContext {
+            title: "Cum Engineers - Page Not Found",
+        },
+    )
+}
+
 fn main() {
     handlebars_helper!(str_eq: |x: str, y: str| x == y);
 
