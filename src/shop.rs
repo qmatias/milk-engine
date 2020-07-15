@@ -1,12 +1,6 @@
-use anyhow::{Context as ErrorContext, Result};
+use crate::PRODUCTS;
 use rocket_contrib::templates::Template;
 use std::collections::HashMap;
-use std::fs::File;
-use std::io::BufReader;
-
-lazy_static! {
-    pub static ref PRODUCTS: HashMap<String, Category> = load_products().unwrap();
-}
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Category {
@@ -37,15 +31,6 @@ fn default_desc() -> String {
 
 fn default_unit() -> String {
     "Liter".to_owned()
-}
-
-fn load_products() -> Result<HashMap<String, Category>> {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/data/products.yml");
-    let file = File::open(path).context("Failed to open product data file")?;
-    let reader = BufReader::new(file);
-    let products =
-        serde_yaml::from_reader(reader).context("Failed to parse yaml in product data file")?;
-    Ok(products)
 }
 
 #[derive(Serialize)]

@@ -13,32 +13,42 @@ extern crate serde_derive;
 
 mod shop;
 
+mod home;
+
 #[cfg(test)]
 mod tests;
 
+use anyhow::{Context as ErrorContext, Result};
 use rocket::Rocket;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::handlebars::handlebars_helper;
 use rocket_contrib::templates::Template;
-use shop::PRODUCTS;
+use serde::de::DeserializeOwned;
+use std::collections::HashMap;
+use std::fs::File;
+use std::io::BufReader;
+use std::path::Path;
+
+lazy_static! {
+    pub static ref PRODUCTS: HashMap<String, shop::Category> =
+        load_data("data/products.yml").unwrap();
+    pub static ref ADS: Vec<home::Ad> = load_data("data/ads.yml").unwrap();
+}
+
+fn load_data<T: DeserializeOwned>(path: &'static str) -> Result<T> {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join(path);
+    let file = File::open(path).context("Failed to open product data file")?;
+    let reader = BufReader::new(file);
+    let products =
+        serde_yaml::from_reader(reader).context("Failed to parse yaml in product data file")?;
+    Ok(products)
+}
 
 #[derive(Serialize)]
 struct TemplateContext {
     title: &'static str,
     desc: &'static str,
     image: &'static str,
-}
-
-#[get("/")]
-fn index() -> Template {
-    Template::render(
-        "index",
-        TemplateContext {
-            title: "Cum Engineers",
-            desc: "Cum Engineers - Home of the Cum Engine",
-            image: "sale.jpg",
-        },
-    )
 }
 
 #[get("/about")]
@@ -83,6 +93,7 @@ fn main() {
 
 fn rocket() -> Rocket {
     lazy_static::initialize(&PRODUCTS);
+    lazy_static::initialize(&ADS);
 
     handlebars_helper!(str_eq: |x: str, y: str| x == y);
 
@@ -94,7 +105,10 @@ fn rocket() -> Rocket {
     });
 
     rocket::ignite()
-        .mount("/", routes![index, about, shop::shop, shop::shop_category])
+        .mount(
+            "/",
+            routes![home::index, about, shop::shop, shop::shop_category],
+        )
         .mount(
             "/",
             StaticFiles::from(concat!(env!("CARGO_MANIFEST_DIR"), "/static")),
