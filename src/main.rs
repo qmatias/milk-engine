@@ -19,6 +19,7 @@ use std::collections::HashMap;
 #[derive(Serialize)]
 struct TemplateContext {
     title: &'static str,
+    desc: &'static str,
 }
 
 #[get("/")]
@@ -26,7 +27,8 @@ fn index() -> Template {
     Template::render(
         "index",
         TemplateContext {
-            title: "Cum Engineers - Home of the Cum Engine",
+            title: "Cum Engineers",
+            desc: "Cum Engineers - Home of the Cum Engine",
         },
     )
 }
@@ -37,26 +39,27 @@ fn about() -> Template {
         "about",
         TemplateContext {
             title: "About the Cum Engineers",
+            desc: "Cum Engineers - About the Cum Engineers",
         },
     )
 }
 
 #[catch(404)]
 fn not_found() -> Template {
-    Template::render(
-        "404",
-        TemplateContext {
-            title: "Cum Engineers - Page Not Found",
-        },
-    )
+    missing_page()
 }
 
 #[catch(500)]
 fn server_error() -> Template {
+    missing_page()
+}
+
+fn missing_page() -> Template {
     Template::render(
         "404",
         TemplateContext {
-            title: "Cum Engineers - Page Not Found",
+            title: "Page Not Found",
+            desc: "Cum Engineers - Error 404, Page Not Found",
         },
     )
 }

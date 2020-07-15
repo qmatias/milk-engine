@@ -36,7 +36,7 @@ fn default_desc() -> String {
 }
 
 fn default_unit() -> String {
-    "liter".to_owned()
+    "Liter".to_owned()
 }
 
 fn load_products() -> Result<HashMap<String, Category>> {
@@ -51,12 +51,14 @@ fn load_products() -> Result<HashMap<String, Category>> {
 #[derive(Serialize)]
 struct ShopOverviewContext {
     title: &'static str,
+    desc: &'static str,
     categories: &'static HashMap<String, Category>,
 }
 
 #[derive(Serialize)]
 struct ShopCategoryContext {
     title: String,
+    desc: &'static String,
     categories: &'static HashMap<String, Category>,
     category: &'static Category,
     category_uri: String,
@@ -68,6 +70,7 @@ pub(crate) fn shop() -> Template {
         "shop_overview",
         ShopOverviewContext {
             title: "The CumShop™",
+            desc: "Our CumShop™, where you can shop for all of our products",
             categories: &*PRODUCTS,
         },
     )
@@ -75,11 +78,12 @@ pub(crate) fn shop() -> Template {
 
 #[get("/shop/<category_uri>")]
 pub(crate) fn shop_category(category_uri: String) -> Option<Template> {
-    let category = PRODUCTS.get(&category_uri)?;
+    let category: &Category = PRODUCTS.get(&category_uri)?;
     Some(Template::render(
         "shop_category",
         ShopCategoryContext {
             title: format!("CumShop™ - {}", &category.pretty_name),
+            desc: &category.description,
             categories: &*PRODUCTS,
             category,
             category_uri,

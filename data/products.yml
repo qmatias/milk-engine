@@ -41,7 +41,7 @@ cum:
       image: boxed.jpg
     - name: Bottled Cum
       price: 5
-      unit: bottle
+      unit: Bottle
       description: Bottled Cum for your convenience.
       image: bottled.jpg
 parts:
