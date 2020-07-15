@@ -1,5 +1,7 @@
 #![feature(proc_macro_hygiene, decl_macro)]
-#[warn(clippy::all)]
+#![warn(clippy::pedantic, clippy::cargo)]
+#![allow(clippy::non_ascii_literal, clippy::cargo_common_metadata)]
+
 #[macro_use]
 extern crate rocket;
 
@@ -10,6 +12,11 @@ extern crate lazy_static;
 extern crate serde_derive;
 
 mod shop;
+
+#[cfg(test)]
+mod tests;
+
+use rocket::Rocket;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::handlebars::handlebars_helper;
 use rocket_contrib::templates::Template;
@@ -71,9 +78,13 @@ fn internal_error() -> Template {
 }
 
 fn main() {
-    handlebars_helper!(str_eq: |x: str, y: str| x == y);
+    rocket().launch();
+}
 
+fn rocket() -> Rocket {
     lazy_static::initialize(&PRODUCTS);
+
+    handlebars_helper!(str_eq: |x: str, y: str| x == y);
 
     let template_engine = Template::custom(|engines| {
         engines.handlebars.set_strict_mode(true);
@@ -90,5 +101,4 @@ fn main() {
         )
         .register(catchers![not_found, internal_error])
         .attach(template_engine)
-        .launch();
 }

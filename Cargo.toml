@@ -1,6 +1,8 @@
 [package]
 name = "cum-engine"
 version = "0.1.0"
+repository = "https://github.com/qmatias/cum-engine"
+readme = "README.md"
 authors = ["Matias Kotlik <mdkotlik@gmail.com>"]
 edition = "2018"
 

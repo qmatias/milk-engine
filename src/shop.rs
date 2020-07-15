@@ -15,11 +15,11 @@ pub struct Category {
     pub description: String,
     pub image: String,
     #[serde(default)]
-    pub items: Vec<ShopItem>,
+    pub items: Vec<Product>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ShopItem {
+pub struct Product {
     pub name: String,
     pub price: f64,
     #[serde(default)]
