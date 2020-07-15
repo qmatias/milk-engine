@@ -1,2 +1,7 @@
 [development]
-address = "192.168.0.31"
+address = "0.0.0.0"
+
+[production]
+address = "127.0.0.1"
+port = 1337
+log = "normal"
