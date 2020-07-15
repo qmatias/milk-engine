@@ -58,16 +58,12 @@
                                 </p>
                             </header>
                             <div class="card-content">
-                                <p class="itemDescription">{{ description }}</p>
-                                <p class="itemPrice">
-                                    <span class="itemNum">
-                                        {{ price }}
-                                    </span>
-                                    <span class="itemUnit">
-                                        {{#if (str_eq ../category.name "cum") }}
-                                            / {{ unit }}
-                                        {{/if}}
-                                    </span>
+                                <p>{{ description }}</p>
+                                <p>
+                                    <span class="has-text-weight-semibold">${{ price }}</span>
+                                    {{#if (str_eq ../category.name "cum") }}
+                                        / {{ unit }}
+                                    {{/if}}
                                 </p>
                             </div>
                             <footer class="card-footer">

@@ -11,6 +11,7 @@ extern crate lazy_static;
 #[macro_use]
 extern crate serde_derive;
 
+use rocket::http::Status;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::handlebars::handlebars_helper;
 use rocket_contrib::templates::Template;
@@ -48,20 +49,23 @@ fn about() -> Template {
 
 #[catch(404)]
 fn not_found() -> Template {
-    missing_page()
-}
-
-#[catch(500)]
-fn server_error() -> Template {
-    missing_page()
-}
-
-fn missing_page() -> Template {
     Template::render(
         "404",
         TemplateContext {
             title: "Page Not Found",
             desc: "Cum Engineers - Error 404, Page Not Found",
+            image: "404.png",
+        },
+    )
+}
+
+#[catch(500)]
+fn internal_error() -> Template {
+    Template::render(
+        "500",
+        TemplateContext {
+            title: "Internal Server Error",
+            desc: "Cum Engineers - Error 500, Internal Server Error",
             image: "404.png",
         },
     )
@@ -83,7 +87,7 @@ fn main() {
             "/",
             StaticFiles::from(concat!(env!("CARGO_MANIFEST_DIR"), "/static")),
         )
-        .register(catchers![not_found])
+        .register(catchers![not_found, internal_error])
         .attach(template_engine)
         .launch();
 }
