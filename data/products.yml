@@ -3,54 +3,54 @@ engines:
   pretty_name: Engines
   name: engines
   description: Our top quality engines will never let you down.
-  image: cumbeater-8000.jpg
+  image: engine.png
   items:
     - name: CumBeater™ 8000
       price: 749.99
       horsepower: 200
       description: A good choice all round, you can't go wrong with our CumBeater™ 8000.
-      image: cumbeater-8000.jpg
+      image: engines/cumbeater-8000.jpg
     - name: CumBeater™ 6000
       price: 549.99
       horsepower: 120
       description: Our older but still very potent CumBeater™, for those on a budget.
-      image: cumbeater-6000.jpg
+      image: engines/cumbeater-6000.jpg
     - name: CumCannon™ Mini X
       price: 1200
       horsepower: 120
       description: Our Anniversary edition CumCannon™.
-      image: cumcannon-mini.jpg
+      image: engines/cumcannon-mini.jpg
     - name: CumBeater Personal
       price: 50
       horsepower: 5
       description: A very affordable Personal CumBeater for household tasks.
-      image: cumbeater-personal.png
+      image: engines/cumbeater-personal.png
 cum:
   pretty_name: Cum
   name: cum
   description: Organic Cum, straight from the farm, to you.
-  image: bottled.jpg
+  image: cumjar.png
   items:
     - name: Standard Cum
       price: 20
       description: Standard Cum from our ejaculatory factories, garunteed to be Grade AA or above.
-      image: standard.jpg
+      image: cum/standard.jpg
     - name: Gold Star Premium™ Cum
       price: 2500
       description: Gold Star Premium Cum, comes boxed with certificate of authenticity.
-      image: boxed.jpg
+      image: cum/boxed.jpg
     - name: Bottled Cum
       price: 5
       unit: Bottle
       description: Bottled Cum for your convenience.
-      image: bottled.jpg
+      image: cum/bottled.jpg
 parts:
   pretty_name: Parts
   name: parts
   description: Expert tools for repair of our Cum Engines.
-  image: kit.jpg
+  image: part.png
   items:
     - name: Repair Kit
       price: 100
       description: All the cables, wrenches, and bolts you will need to repair any of our engines. Instruction manual not included.
-      image: kit.jpg
+      image: parts/kit.jpg

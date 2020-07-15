@@ -52,13 +52,15 @@ fn load_products() -> Result<HashMap<String, Category>> {
 struct ShopOverviewContext {
     title: &'static str,
     desc: &'static str,
+    image: &'static str,
     categories: &'static HashMap<String, Category>,
 }
 
 #[derive(Serialize)]
 struct ShopCategoryContext {
     title: String,
-    desc: &'static String,
+    desc: &'static str,
+    image: &'static str,
     categories: &'static HashMap<String, Category>,
     category: &'static Category,
     category_uri: String,
@@ -70,6 +72,7 @@ pub(crate) fn shop() -> Template {
         "shop_overview",
         ShopOverviewContext {
             title: "The CumShop™",
+            image: "sale.jpg",
             desc: "Our CumShop™, where you can shop for all of our products",
             categories: &*PRODUCTS,
         },
@@ -83,6 +86,7 @@ pub(crate) fn shop_category(category_uri: String) -> Option<Template> {
         "shop_category",
         ShopCategoryContext {
             title: format!("CumShop™ - {}", &category.pretty_name),
+            image: &category.image,
             desc: &category.description,
             categories: &*PRODUCTS,
             category,

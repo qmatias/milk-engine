@@ -20,6 +20,7 @@ use std::collections::HashMap;
 struct TemplateContext {
     title: &'static str,
     desc: &'static str,
+    image: &'static str,
 }
 
 #[get("/")]
@@ -29,6 +30,7 @@ fn index() -> Template {
         TemplateContext {
             title: "Cum Engineers",
             desc: "Cum Engineers - Home of the Cum Engine",
+            image: "sale.jpg",
         },
     )
 }
@@ -40,6 +42,7 @@ fn about() -> Template {
         TemplateContext {
             title: "About the Cum Engineers",
             desc: "Cum Engineers - About the Cum Engineers",
+            image: "sale.jpg",
         },
     )
 }
@@ -60,6 +63,7 @@ fn missing_page() -> Template {
         TemplateContext {
             title: "Page Not Found",
             desc: "Cum Engineers - Error 404, Page Not Found",
+            image: "404.png",
         },
     )
 }
