@@ -11,17 +11,17 @@
             </div>
         </div>
     </section>
-    {{#with message}}
-        <div class="container">
-            <div class="toggleable notification is-{{ name }}">
-                <button class="delete"></button>
-                <p>
-                    {{ msg }}
-                </p>
-            </div>
-        </div>
-    {{/with}}
     <section class="section">
+        {{#with message}}
+            <div class="container mb-5">
+                <div class="toggleable notification is-{{ name }}">
+                    <button class="delete"></button>
+                    <p>
+                        {{ msg }}
+                    </p>
+                </div>
+            </div>
+        {{/with}}
         <div class="container">
             <form id="comment-form" action="/comments/post" method="post" class="field">
                 <div class="columns">
