@@ -1,7 +1,7 @@
 {{#*inline "page"}}
-    <section class="section">
-        <div class="container">
-            <div id="aboutText" class="box">
+    <section class="hero is-small">
+        <div class="hero-body">
+            <div class="container">
                 <h1 class="title is-size-2-tablet is-size-1-widescreen">
                     Message Board
                 </h1>
@@ -11,101 +11,86 @@
             </div>
         </div>
     </section>
-    <section class="section">
-        {{#with message}}
-            <div class="container mb-5">
-                <div class="toggleable notification is-{{ name }}">
-                    <button class="delete"></button>
-                    <p>
-                        {{ msg }}
-                    </p>
-                </div>
-            </div>
-        {{/with}}
+    <section class="section pt-3">
         <div class="container">
-            <form id="comment-form" action="/comments/post" method="post" class="field">
-                <div class="columns">
-                    <div class="column field is-one-third">
-                        <label for="author" class="label">Name</label>
-                        <div class="control has-icons-left">
-                            <input id="author" name="author" class="input" type="text" placeholder="Bob Ross">
-                            <span class="icon is-small is-left"><i class="material-icons">person</i></span>
+            <div class="box">
+                {{#with message}}
+                    <div class="mb-5">
+                        <div class="toggleable notification is-{{ name }}">
+                            <button class="delete"></button>
+                            <p>
+                                {{ msg }}
+                            </p>
                         </div>
-                        <p class="help">Enter the name you wish to appear with your comment</p>
                     </div>
-                    <div class="column field">
-                        <label for="content" class="label">Message</label>
-                        <div class="control has-icons-left">
+                {{/with}}
+                <form id="comment-form" action="/comments/post" method="post" class="field">
+                    <div class="columns">
+                        <div class="column field is-one-third">
+                            <label for="author" class="label">Name</label>
+                            <div class="control has-icons-left">
+                                <input id="author" name="author" class="input" type="text" placeholder="Bob Ross">
+                                <span class="icon is-small is-left"><i class="material-icons">person</i></span>
+                            </div>
+                            <p class="help">Enter the name you wish to appear with your comment</p>
+                        </div>
+                        <div class="column field">
+                            <label for="content" class="label">Message</label>
+                            <div class="control has-icons-left">
                             <textarea id="content" name="content" class="textarea"
                                       placeholder="I fucking love Cum Engine&trade;"></textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <label class="checkbox">
-                            <input id="sell_soul" name="sell_soul" type="checkbox">
-                            I agree to forfeit my left kidney to Cum Engineers&trade; Inc.
-                        </label>
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input id="sell_soul" name="sell_soul" type="checkbox">
+                                I agree to forfeit my left kidney to Cum Engineers&trade; Inc.
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <button type="submit" class="button is-warning" class="g-recaptcha"
-                                data-sitekey="6LdC4LEZAAAAAFikh2RXnsTadv3OyU6d32Cd3atP" data-callback='onSubmit'
-                                data-action='submit'>
-                            Submit post
-                        </button>
+                    <div class="field">
+                        <div class="control">
+                            <button type="submit" class="button is-warning" class="g-recaptcha"
+                                    data-sitekey="6LdC4LEZAAAAAFikh2RXnsTadv3OyU6d32Cd3atP" data-callback='onSubmit'
+                                    data-action='submit'>
+                                Submit post
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </section>
     <section class="section">
         <div class="container">
+            <h1 class="title">
+                Recent Messages:
+            </h1>
             {{#each comments}}
-                <div class="box comment {{#if from_engineer }} is-distinguished {{/if}}">
-                    <div class="media">
-                        <figure class="media-left image is-64x64">
-                            {{#if from_engineer }}
-                                <img src="/pfp.png" alt="{{ author }}">
-                            {{else}}
-                                <img src="/404.png" alt="{{ author }}">
-                            {{/if}}
-                        </figure>
-                        <div class="media-content is-no-overflow">
-                            <div class="level mb-2">
-                                <div class="level-left">
-                                    <div class="level-item is-author">
-                                        <div class="level is-mobile">
-                                            <div class="level-item">
-                                                <p class="is-break-wrap">
-                                                    {{ author }}
-                                                </p>
-                                            </div>
-                                            {{#if from_engineer }}
-                                                <div class="level-item has-tooltip">
-                                                    <span class="icon">
-                                                        <i class="icon material-icons">verified_user</i>
-                                                    </span>
-                                                    <span class="tooltip-text">
-                                                        <p>Verified Cum Engineer</p>
-                                                    </span>
-                                                </div>
-                                            {{/if}}
-                                        </div>
-                                    </div>
-                                    <div class="level-item is-size-7">
-                                        <p>
-                                            {{ time_passed }}
-                                        </p>
-                                    </div>
-                                </div>
+                <div class="box comment is-clearfix {{#if from_engineer }} is-distinguished {{/if}}">
+                    <figure class="is-pulled-left mr-5 mb-2 image is-64x64">
+                        {{#if from_engineer }}
+                            <img src="/pfp.png" alt="{{ author }}">
+                        {{else}}
+                            <img src="/404.png" alt="{{ author }}">
+                        {{/if}}
+                    </figure>
+                    <div class="comment-header">
+                        <span class="has-text-weight-semibold">{{ author }}</span>
+                        {{#if from_engineer }}
+                            <div class="has-tooltip">
+                                <span class="icon"><i class="icon material-icons">verified_user</i></span>
+                                <span class="tooltip-text">Verified Cum Engineer</span>
                             </div>
-                            <p class="is-break-wrap">
-                                    {{ content }}
-                            </p>
-                        </div>
+                        {{/if}}
+                        <span class="ml-2 is-size-7">{{ time_passed }}</span>
+                    </div>
+                    <div>
+                        <p class="is-break-wrap">
+                            {{ content }}
+                        </p>
                     </div>
                 </div>
             {{/each}}

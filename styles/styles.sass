@@ -4,7 +4,6 @@ $family-primary: 'Open Sans', sans-serif
 $family-secondary: 'Montserrat', sans-serif
 
 @import "./bulma-0.9.0/bulma"
-@import "./animations"
 
 .is-rounded-rect
   border-radius: 8px
@@ -30,7 +29,6 @@ $family-secondary: 'Montserrat', sans-serif
 
 .has-tooltip
   position: relative
-  cursor: default
 
   .tooltip-text
     @extend .has-background-dark
@@ -43,7 +41,7 @@ $family-secondary: 'Montserrat', sans-serif
 
     position: absolute
     z-index: 1
-    bottom: 110%
+    bottom: 100%
 
     $tooltip-width: 140px
     width: $tooltip-width
@@ -60,3 +58,12 @@ $family-secondary: 'Montserrat', sans-serif
 
 .is-no-overflow
   overflow: hidden
+
+.comment-header
+  @extend .mb-3
+  display: flex
+  align-items: center
+  justify-content: flex-start
+
+  > *
+    @extend .mr-1
