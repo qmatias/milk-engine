@@ -1,3 +1,9 @@
+[global]
+template_dir = "templates"
+
+[global.databases.sqlite_database]
+url = "db/db.sqlite"
+
 [development]
 address = "0.0.0.0"
 

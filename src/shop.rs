@@ -1,27 +1,50 @@
-use crate::PRODUCTS;
+use crate::Products;
+use rocket::State;
 use rocket_contrib::templates::Template;
 use std::collections::HashMap;
 
+/// A category in the shop
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Category {
+    /// Pretty name of the category to be displayed
     pub pretty_name: String,
+
+    /// Name of the category which shouldn't change
     pub name: String,
+
+    /// Brief category description
     pub description: String,
-    pub image: String,
+
+    /// Category preview image
+    pub image: Option<String>,
+
+    /// All of the products which belong to this category
     #[serde(default)]
     pub items: Vec<Product>,
 }
 
+/// A product in the shop
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Product {
+    /// Pretty name of the product
     pub name: String,
+
+    /// Price of product
     pub price: f64,
+
+    /// Horsepower, displayed for engine listings
     #[serde(default)]
     pub horsepower: u32,
+
+    /// Description shown on the product preview page
     #[serde(default = "default_desc")]
     pub description: String,
+
+    /// Unit, displayed for cum listings
     #[serde(default = "default_unit")]
     pub unit: String,
+
+    /// An image for the product
     pub image: Option<String>,
 }
 
@@ -34,46 +57,46 @@ fn default_unit() -> String {
 }
 
 #[derive(Serialize)]
-struct ShopOverviewContext {
+struct ShopOverviewContext<'r> {
     title: &'static str,
     desc: &'static str,
     image: &'static str,
-    categories: &'static HashMap<String, Category>,
+    categories: &'r HashMap<String, Category>,
 }
 
 #[derive(Serialize)]
-struct ShopCategoryContext {
+struct ShopCategoryContext<'r> {
     title: String,
-    desc: &'static str,
-    image: &'static str,
-    categories: &'static HashMap<String, Category>,
-    category: &'static Category,
+    desc: &'r str,
+    image: Option<&'r str>,
+    categories: &'r HashMap<String, Category>,
+    category: &'r Category,
     category_uri: String,
 }
 
 #[get("/shop")]
-pub(crate) fn shop() -> Template {
+pub fn index(products: State<Products>) -> Template {
     Template::render(
         "shop_overview",
         ShopOverviewContext {
             title: "The CumShop™",
             image: "sale.jpg",
             desc: "Our CumShop™, where you can shop for all of our products",
-            categories: &*PRODUCTS,
+            categories: &products,
         },
     )
 }
 
 #[get("/shop/<category_uri>")]
-pub(crate) fn shop_category(category_uri: String) -> Option<Template> {
-    let category: &Category = PRODUCTS.get(&category_uri)?;
+pub fn category(category_uri: String, products: State<Products>) -> Option<Template> {
+    let category = products.get(&category_uri)?;
     Some(Template::render(
         "shop_category",
         ShopCategoryContext {
             title: format!("CumShop™ - {}", &category.pretty_name),
-            image: &category.image,
+            image: category.image.as_deref(),
             desc: &category.description,
-            categories: &*PRODUCTS,
+            categories: &products,
             category,
             category_uri,
         },

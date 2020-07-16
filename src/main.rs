@@ -1,118 +1,81 @@
-#![feature(proc_macro_hygiene, decl_macro)]
+#![feature(proc_macro_hygiene, decl_macro, exclusive_range_pattern)]
 #![warn(clippy::pedantic, clippy::cargo)]
-#![allow(clippy::non_ascii_literal, clippy::cargo_common_metadata)]
+#![allow(clippy::non_ascii_literal)] // it's 2020
+#![allow(clippy::cargo_common_metadata)] // not a crate
+#![allow(clippy::needless_pass_by_value)] // fucks with rocket
 
 #[macro_use]
 extern crate rocket;
-
 #[macro_use]
-extern crate lazy_static;
-
+extern crate rocket_contrib;
 #[macro_use]
 extern crate serde_derive;
+#[macro_use]
+extern crate diesel;
+#[macro_use]
+extern crate diesel_migrations;
 
-mod shop;
-
+mod about;
+mod comments;
+mod errors;
 mod home;
+mod schema;
+mod shop;
+mod util;
 
 #[cfg(test)]
 mod tests;
 
-use anyhow::{Context as ErrorContext, Result};
+use diesel::SqliteConnection;
+use rocket::fairing::AdHoc;
 use rocket::Rocket;
 use rocket_contrib::serve::StaticFiles;
-use rocket_contrib::templates::handlebars::handlebars_helper;
-use rocket_contrib::templates::Template;
-use serde::de::DeserializeOwned;
 use std::collections::HashMap;
-use std::fs::File;
-use std::io::BufReader;
-use std::path::Path;
 
-lazy_static! {
-    pub static ref PRODUCTS: HashMap<String, shop::Category> =
-        load_data("data/products.yml").unwrap();
-    pub static ref ADS: Vec<home::Ad> = load_data("data/ads.yml").unwrap();
-}
+#[database("sqlite_database")]
+pub struct DbConn(SqliteConnection);
 
-fn load_data<T: DeserializeOwned>(path: &'static str) -> Result<T> {
-    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join(path);
-    let file = File::open(path).context("Failed to open product data file")?;
-    let reader = BufReader::new(file);
-    let products =
-        serde_yaml::from_reader(reader).context("Failed to parse yaml in product data file")?;
-    Ok(products)
-}
+/// Map of URL to shop categories, lazy loaded from data/products.yml
+type Products = HashMap<String, shop::Category>;
 
+/// List of ads to show on the home screen, lazy loaded from data/ads.yml
+type Ads = Vec<home::Ad>;
+
+/// Very basic template context
 #[derive(Serialize)]
-struct TemplateContext {
-    title: &'static str,
-    desc: &'static str,
-    image: &'static str,
-}
-
-#[get("/about")]
-fn about() -> Template {
-    Template::render(
-        "about",
-        TemplateContext {
-            title: "About the Cum Engineers",
-            desc: "Cum Engineers - About the Cum Engineers",
-            image: "sale.jpg",
-        },
-    )
-}
-
-#[catch(404)]
-fn not_found() -> Template {
-    Template::render(
-        "404",
-        TemplateContext {
-            title: "Page Not Found",
-            desc: "Cum Engineers - Error 404, Page Not Found",
-            image: "404.png",
-        },
-    )
-}
-
-#[catch(500)]
-fn internal_error() -> Template {
-    Template::render(
-        "500",
-        TemplateContext {
-            title: "Internal Server Error",
-            desc: "Cum Engineers - Error 500, Internal Server Error",
-            image: "404.png",
-        },
-    )
+pub struct TemplateContext {
+    pub title: &'static str,
+    pub desc: &'static str,
+    pub image: &'static str,
 }
 
 fn main() {
-    rocket().launch();
+    build_rocket().launch();
 }
 
-fn rocket() -> Rocket {
-    lazy_static::initialize(&PRODUCTS);
-    lazy_static::initialize(&ADS);
-
-    handlebars_helper!(str_eq: |x: str, y: str| x == y);
-
-    let template_engine = Template::custom(|engines| {
-        engines.handlebars.set_strict_mode(true);
-        engines
-            .handlebars
-            .register_helper("str_eq", Box::new(str_eq));
-    });
-
+fn build_rocket() -> Rocket {
     rocket::ignite()
+        .attach(DbConn::fairing())
+        .attach(AdHoc::on_attach(
+            "Perform Database Migrations",
+            util::run_db_migrations,
+        ))
+        .attach(AdHoc::on_attach("Load Static Data", util::load_static_data))
         .mount(
             "/",
-            routes![home::index, about, shop::shop, shop::shop_category],
+            routes![
+                home::index,
+                about::index,
+                comments::index,
+                comments::post,
+                shop::index,
+                shop::category
+            ],
         )
         .mount(
             "/",
             StaticFiles::from(concat!(env!("CARGO_MANIFEST_DIR"), "/static")),
         )
-        .register(catchers![not_found, internal_error])
-        .attach(template_engine)
+        .register(catchers![errors::not_found, errors::internal_error])
+        .attach(util::build_template_engine())
 }

@@ -1,12 +1,13 @@
-use crate::ADS;
+use crate::Ads;
+use rocket::State;
 use rocket_contrib::templates::Template;
 
 #[derive(Serialize)]
-struct HomeContext {
+struct HomeContext<'r> {
     title: &'static str,
     desc: &'static str,
     image: &'static str,
-    ads: &'static Vec<Ad>,
+    ads: &'r Vec<Ad>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -18,14 +19,14 @@ pub struct Ad {
 }
 
 #[get("/")]
-pub fn index() -> Template {
+pub fn index(ads: State<Ads>) -> Template {
     Template::render(
         "index",
         HomeContext {
             title: "Cum Engineers",
             desc: "Cum Engineers - Home of the Cum Engine",
-            image: "sale.jpg",
-            ads: &*ADS,
+            image: "logo.png",
+            ads: ads.inner(),
         },
     )
 }

@@ -1,5 +1,11 @@
+# Rust build output
 /target
+
+# IntelliJ directory
 .idea/
+
+# Generated sqlite databases
+db.sqlite
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,rust
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,rust

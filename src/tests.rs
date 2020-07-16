@@ -15,7 +15,7 @@ fn test_routes() {
 }
 
 fn test_urls(urls: Vec<&str>) {
-    let mut client = Client::new(rocket()).unwrap();
+    let mut client = Client::new(prepare()).unwrap();
     for url in urls {
         test_url(&mut client, url)
     }

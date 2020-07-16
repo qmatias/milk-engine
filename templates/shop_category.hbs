@@ -46,7 +46,7 @@
                             <div class="card-image">
                                 <figure class="image is-square">
                                     {{#with image as | image |}}
-                                        <img src="/{{ image }}" alt="Image">
+                                        <img src="/{{ image }}" alt="{{ ../name }}">
                                     {{else}}
                                         <img src="/404.png" alt="Missing Image">
                                     {{/with}}

@@ -1,0 +1,125 @@
+{{#*inline "page"}}
+    <section class="section">
+        <div class="container">
+            <div id="aboutText" class="box">
+                <h1 class="title is-size-2-tablet is-size-1-widescreen">
+                    Message Board
+                </h1>
+                <h2 class="subtitle is-size-4-tablet is-size-3-widescreen">
+                    Talk to the genius engineers that brought you Cum Engine&trade;
+                </h2>
+            </div>
+        </div>
+    </section>
+    {{#with message}}
+        <div class="container">
+            <div class="toggleable notification is-{{ name }}">
+                <button class="delete"></button>
+                <p>
+                    {{ msg }}
+                </p>
+            </div>
+        </div>
+    {{/with}}
+    <section class="section">
+        <div class="container">
+            <form id="comment-form" action="/comments/post" method="post" class="field">
+                <div class="columns">
+                    <div class="column field is-one-third">
+                        <label for="author" class="label">Name</label>
+                        <div class="control has-icons-left">
+                            <input id="author" name="author" class="input" type="text" placeholder="Bob Ross">
+                            <span class="icon is-small is-left"><i class="material-icons">person</i></span>
+                        </div>
+                        <p class="help">Enter the name you wish to appear with your comment</p>
+                    </div>
+                    <div class="column field">
+                        <label for="content" class="label">Message</label>
+                        <div class="control has-icons-left">
+                            <textarea id="content" name="content" class="textarea"
+                                      placeholder="I fucking love Cum Engine&trade;"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label class="checkbox">
+                            <input id="sell_soul" name="sell_soul" type="checkbox">
+                            I agree to forfeit my left kidney to Cum Engineers&trade; Inc.
+                        </label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button type="submit" class="button is-warning" class="g-recaptcha"
+                                data-sitekey="6LdC4LEZAAAAAFikh2RXnsTadv3OyU6d32Cd3atP" data-callback='onSubmit'
+                                data-action='submit'>
+                            Submit post
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            {{#each comments}}
+                <div class="box comment {{#if from_engineer }} is-distinguished {{/if}}">
+                    <div class="media">
+                        <figure class="media-left image is-64x64">
+                            {{#if from_engineer }}
+                                <img src="/pfp.png" alt="{{ author }}">
+                            {{else}}
+                                <img src="/404.png" alt="{{ author }}">
+                            {{/if}}
+                        </figure>
+                        <div class="media-content is-no-overflow">
+                            <div class="level mb-2">
+                                <div class="level-left">
+                                    <div class="level-item is-author">
+                                        <div class="level is-mobile">
+                                            <div class="level-item">
+                                                <p class="is-break-wrap">
+                                                    {{ author }}
+                                                </p>
+                                            </div>
+                                            {{#if from_engineer }}
+                                                <div class="level-item has-tooltip">
+                                                    <span class="icon">
+                                                        <i class="icon material-icons">verified_user</i>
+                                                    </span>
+                                                    <span class="tooltip-text">
+                                                        <p>Verified Cum Engineer</p>
+                                                    </span>
+                                                </div>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                    <div class="level-item is-size-7">
+                                        <p>
+                                            {{ time_passed }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="is-break-wrap">
+                                    {{ content }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </section>
+{{/inline}}
+
+{{#*inline "scripts"}}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        function onSubmit(token) {
+            document.getElementById("comment-form").submit();
+        }
+    </script>
+{{/inline}}
+
+{{~> layout~}}
