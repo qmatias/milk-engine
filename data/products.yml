@@ -20,10 +20,10 @@ engines:
       horsepower: 120
       description: Our Anniversary edition CumCannon™.
       image: engines/cumcannon-mini.jpg
-    - name: CumBeater Personal
+    - name: CumBeater™ Personal
       price: 50
       horsepower: 5
-      description: A very affordable Personal CumBeater for household tasks.
+      description: A very affordable Personal CumBeater™ for household tasks.
       image: engines/cumbeater-personal.png
 cum:
   pretty_name: Cum
