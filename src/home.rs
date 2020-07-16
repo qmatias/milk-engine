@@ -25,7 +25,7 @@ pub fn index(ads: State<Ads>) -> Template {
         HomeContext {
             title: "Cum Engineers",
             desc: "Cum Engineers - Home of the Cum Engine",
-            image: "logo-dark.png",
+            image: "logo.png",
             ads: ads.inner(),
         },
     )

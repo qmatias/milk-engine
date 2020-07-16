@@ -109,7 +109,7 @@ pub fn index(conn: DbConn, message: Option<FlashMessage>) -> Result<Template> {
         "comments",
         ListingContext {
             title: "Message Board",
-            image: "logo-dark.png",
+            image: "logo.png",
             message: message.map(|f| Message {
                 name: util::to_bulma_class(f.name()),
                 msg: f.msg().to_owned(),
