@@ -6,7 +6,7 @@ use std::ops::Sub;
 #[table_name = "comments"]
 #[derive(Queryable, Insertable, Debug)]
 pub struct InsertComment {
-    pub ip_address: Vec<u8>,
+    pub ip_address: String,
     pub author: String,
     pub content: String,
 }
@@ -16,7 +16,7 @@ pub struct InsertComment {
 pub struct QueryComment {
     pub id: i32,
     pub post_time: NaiveDateTime,
-    pub ip_address: Option<Vec<u8>>,
+    pub ip_address: Option<String>,
     pub author: String,
     pub content: String,
     pub from_engineer: bool,
@@ -25,7 +25,7 @@ pub struct QueryComment {
 /// Gets all the posts sent in the last `time_frame` from `address`
 pub fn count_recent_from(
     time_frame: Duration,
-    ip: &[u8],
+    ip: &str,
     conn: &SqliteConnection,
 ) -> QueryResult<i64> {
     let cutoff = Utc::now().naive_utc().sub(time_frame);

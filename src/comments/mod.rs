@@ -52,7 +52,7 @@ pub fn post(
     submission_form: Form<Submission>,
     conn: DbConn,
 ) -> Result<Flash<Redirect>, Debug<QueryError>> {
-    let ip = util::convert_ip(address);
+    let ip = address.to_string();
     let redirect = Redirect::to(uri!(index));
 
     // Check that the IP doesn't have > 3 posts in the last minute

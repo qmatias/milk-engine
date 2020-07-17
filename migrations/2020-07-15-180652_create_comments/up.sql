@@ -3,7 +3,7 @@
 CREATE TABLE comments (
     id INTEGER PRIMARY KEY NOT NULL,
     post_time DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    ip_address BLOB,
+    ip_address VARCHAR,
     author VARCHAR NOT NULL,
     content VARCHAR NOT NULL,
     from_engineer BOOLEAN NOT NULL DEFAULT 0

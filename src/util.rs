@@ -81,13 +81,6 @@ pub fn to_bulma_class(flash_name: &str) -> &'static str {
     }
 }
 
-pub fn convert_ip(address: SocketAddr) -> Vec<u8> {
-    match address.ip() {
-        IpAddr::V4(ipv4) => ipv4.octets().to_vec(),
-        IpAddr::V6(ipv6) => ipv6.octets().to_vec(),
-    }
-}
-
 pub fn format_duration(d: Duration) -> String {
     if d.num_seconds() <= 5 {
         "Just now".to_owned()
