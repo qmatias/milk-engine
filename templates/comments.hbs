@@ -52,10 +52,7 @@
                     </div>
                     <div class="field">
                         <div class="control">
-                            <button type="submit" class="button is-warning g-recaptcha"
-                                    data-sitekey="6LdC4LEZAAAAAFikh2RXnsTadv3OyU6d32Cd3atP"
-                                    data-callback="onSubmit"
-                                    data-action="submit">
+                            <button type="submit" class="button is-warning">
                                 Submit post
                             </button>
                         </div>
@@ -97,15 +94,6 @@
             {{/each}}
         </div>
     </section>
-{{/inline}}
-
-{{#*inline "scripts"}}
-    <script src="https://www.google.com/recaptcha/api.js"></script>
-    <script>
-        function onSubmit(token) {
-            document.getElementById("comment-form").submit();
-        }
-    </script>
 {{/inline}}
 
 {{~> layout~}}
