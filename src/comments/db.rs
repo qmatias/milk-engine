@@ -44,9 +44,14 @@ pub fn push_comment(comment: InsertComment, conn: &SqliteConnection) -> QueryRes
         .map(|_| ())
 }
 
-pub fn list_comments(count: i64, conn: &SqliteConnection) -> QueryResult<Vec<QueryComment>> {
+pub fn count_comments(conn: &SqliteConnection) -> QueryResult<i64> {
+    dsl::comments.count().get_result(conn)
+}
+
+pub fn list_comments(start: i64, count: i64, conn: &SqliteConnection) -> QueryResult<Vec<QueryComment>> {
     dsl::comments
         .order(dsl::post_time.desc())
+        .offset(start)
         .limit(count)
         .load(conn)
 }

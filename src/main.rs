@@ -1,4 +1,4 @@
-#![feature(proc_macro_hygiene, decl_macro, exclusive_range_pattern)]
+#![feature(proc_macro_hygiene, decl_macro, exclusive_range_pattern, bool_to_option, clamp)]
 #![warn(clippy::pedantic, clippy::cargo)]
 #![allow(clippy::non_ascii_literal)] // it's 2020
 #![allow(clippy::cargo_common_metadata)] // not a crate
@@ -66,8 +66,8 @@ fn build_rocket() -> Rocket {
             routes![
                 home::index,
                 about::index,
-                comments::index,
-                comments::post,
+                comments::view::index,
+                comments::submit::post,
                 shop::index,
                 shop::category
             ],

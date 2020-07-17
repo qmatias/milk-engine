@@ -52,7 +52,7 @@
                     </div>
                     <div class="field">
                         <div class="control">
-                            <button type="submit" class="button is-warning">
+                            <button type="submit" class="button is-primary">
                                 Submit post
                             </button>
                         </div>
@@ -66,6 +66,7 @@
             <h1 class="title">
                 Recent Messages:
             </h1>
+            {{> pager paging}}
             {{#each comments}}
                 <div class="box comment is-clearfix {{#if from_engineer }} is-distinguished {{/if}}">
                     <figure class="is-pulled-left mr-5 mb-2 image is-64x64">
@@ -92,8 +93,42 @@
                     </div>
                 </div>
             {{/each}}
+            {{> pager paging}}
         </div>
     </section>
+{{/inline}}
+
+{{#*inline "pager"}}
+<nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination">
+<a class="pagination-previous" {{#if prev}} href="?page={{ prev }}" {{else}} disabled {{/if}}>
+    Previous
+    </a>
+        <a class="pagination-next" {{#if next}} href="?page={{ next }}" {{else}} disabled {{/if}}>
+    Next page
+    </a>
+    <ul class="pagination-list">
+        {{#with first}}
+            <li><a href="?page={{ this }}" class="pagination-link" aria-label="Goto page {{ this }}
+                ">1</a></li>
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+        {{/with}}
+        {{#with prev}}
+            <li><a href="?page={{ this }}" class="pagination-link" aria-label="Goto page {{ this }}
+                ">{{ this }}</a></li>
+        {{/with}}
+        <li><a href="?page={{ current }}" class="pagination-link is-current"
+            aria-label="Page {{ current }}" aria-current="page">{{ current }}</a></li>
+        {{#with next}}
+            <li><a href="?page={{ this }}" class="pagination-link" aria-label="Goto page {{ this }}
+                ">{{ this }}</a></li>
+        {{/with}}
+        {{#with last}}
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+            <li><a href="?page={{ this }}" class="pagination-link" aria-label="Goto page {{ this }}
+                ">{{ this }}</a></li>
+        {{/with}}
+    </ul>
+</nav>
 {{/inline}}
 
 {{~> layout~}}
