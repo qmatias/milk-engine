@@ -1,8 +1,9 @@
 use crate::{util, DbConn};
 use anyhow::Result;
 use chrono::{DateTime, Duration, NaiveDateTime, Utc};
+use diesel::result::Error as QueryError;
 use rocket::request::{FlashMessage, Form};
-use rocket::response::{Flash, Redirect};
+use rocket::response::{Debug, Flash, Redirect};
 use rocket_contrib::templates::Template;
 use std::net::SocketAddr;
 use std::ops::Sub;
@@ -50,7 +51,7 @@ pub fn post(
     address: SocketAddr,
     submission_form: Form<Submission>,
     conn: DbConn,
-) -> Result<Flash<Redirect>> {
+) -> Result<Flash<Redirect>, Debug<QueryError>> {
     let ip = util::convert_ip(address);
     let redirect = Redirect::to(uri!(index));
 
@@ -93,7 +94,7 @@ fn time_since_posted(now: DateTime<Utc>, posted: NaiveDateTime) -> String {
 }
 
 #[get("/comments")]
-pub fn index(conn: DbConn, message: Option<FlashMessage>) -> Result<Template> {
+pub fn index(conn: DbConn, message: Option<FlashMessage>) -> Result<Template, Debug<QueryError>> {
     let now = Utc::now();
     let comments = db::list_comments(10, &conn)?
         .into_iter()

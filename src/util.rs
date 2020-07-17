@@ -3,25 +3,17 @@ use anyhow::{Context as ErrorContext, Result};
 use chrono::Duration;
 use log::error;
 use rocket::fairing::Fairing;
-use rocket::Rocket;
+use rocket::{Cargo, Rocket};
 use rocket_contrib::templates::handlebars::handlebars_helper;
 use rocket_contrib::templates::Template;
 use serde::de::DeserializeOwned;
-use std::fs::File;
-use std::io::BufReader;
 use std::net::{IpAddr, SocketAddr};
 use std::path::Path;
+use tokio::fs;
 
 // Macro from `diesel_migrations` which allows the server to be run and
 // tested without any outside setup of the database.
 embed_migrations!();
-
-fn _load_static_data() -> Result<(Products, Ads)> {
-    Ok((
-        load_yaml_from::<Products>("data/products.yml")?,
-        load_yaml_from::<Ads>("data/ads.yml")?,
-    ))
-}
 
 pub fn build_template_engine() -> impl Fairing {
     handlebars_helper!(str_eq: |x: str, y: str| x == y);
@@ -35,36 +27,47 @@ pub fn build_template_engine() -> impl Fairing {
 }
 
 /// adhoc fairing to run diesel migrations
-pub fn run_db_migrations(rocket: Rocket) -> Result<Rocket, Rocket> {
-    let conn = DbConn::get_one(&rocket).expect("failed to connect to database");
-    match embedded_migrations::run(&*conn) {
+pub async fn attach_db_migrations(mut rocket: Rocket) -> Result<Rocket, Rocket> {
+    match run_db_migrations(rocket.inspect().await) {
         Ok(()) => Ok(rocket),
         Err(e) => {
-            error!("Failed to run database migrations: {:?}", e);
+            error!("Error while running database migrations: {:?}", e);
             Err(rocket)
         }
     }
 }
 
-/// Loads arbitrary serialized data from a path relative to crate root
-fn load_yaml_from<T: DeserializeOwned>(path: &'static str) -> Result<T> {
-    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join(path);
-    let file = File::open(path).context("Failed to open product data file")?;
-    let reader = BufReader::new(file);
-    let products =
-        serde_yaml::from_reader(reader).context("Failed to parse yaml in product data file")?;
-    Ok(products)
+fn run_db_migrations(cargo: &Cargo) -> Result<()> {
+    let conn = DbConn::get_one(cargo).context("Failed to get a connection from pool")?;
+    embedded_migrations::run(&*conn).context("Failed to run database migrations")?;
+    Ok(())
 }
 
 /// adhoc fairing to load static data
-pub fn load_static_data(rocket: Rocket) -> Result<Rocket, Rocket> {
-    match _load_static_data() {
+pub async fn attach_static_data(rocket: Rocket) -> Result<Rocket, Rocket> {
+    match read_static_data().await {
         Ok((products, ads)) => Ok(rocket.manage(products).manage(ads)),
         Err(e) => {
             error!("Failed to load static data: {:?}", e);
             Err(rocket)
         }
     }
+}
+
+async fn read_static_data() -> Result<(Products, Ads)> {
+    tokio::try_join!(
+        read_yaml::<Products>("data/products.yml"),
+        read_yaml::<Ads>("data/ads.yml"),
+    )
+}
+
+/// Loads arbitrary serialized data from a path relative to crate root
+async fn read_yaml<T: DeserializeOwned>(path: &'static str) -> Result<T> {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join(path);
+    let contents = fs::read(path)
+        .await
+        .context("Failed to read product data file")?;
+    serde_yaml::from_slice(&contents).context("Failed to parse yaml in product data file")
 }
 
 pub fn to_bulma_class(flash_name: &str) -> &'static str {

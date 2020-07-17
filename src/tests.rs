@@ -1,7 +1,7 @@
 use super::rocket;
 use crate::build_rocket;
 use rocket::http::Status;
-use rocket::local::Client;
+use rocket::local::blocking::Client;
 
 #[test]
 fn test_routes() {

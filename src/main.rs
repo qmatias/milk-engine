@@ -49,18 +49,18 @@ pub struct TemplateContext {
     pub image: &'static str,
 }
 
-fn main() {
-    build_rocket().launch();
-}
-
+#[rocket::launch]
 fn build_rocket() -> Rocket {
     rocket::ignite()
         .attach(DbConn::fairing())
         .attach(AdHoc::on_attach(
             "Perform Database Migrations",
-            util::run_db_migrations,
+            util::attach_db_migrations,
         ))
-        .attach(AdHoc::on_attach("Load Static Data", util::load_static_data))
+        .attach(AdHoc::on_attach(
+            "Load Static Data",
+            util::attach_static_data,
+        ))
         .mount(
             "/",
             routes![
