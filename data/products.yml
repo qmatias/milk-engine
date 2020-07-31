@@ -44,6 +44,11 @@ cum:
       unit: Bottle
       description: Bottled Cum for your convenience.
       image: cum/bottled.jpg
+    - name: Bagged Cum
+      price: 40
+      unit: Bag
+      description: Bagged Cum. Don't let it's appearance fool you -- this cum is as pure as it gets. Bagged directly after ejaculation and shipped straight to you -- no shenanigans.
+      image: cum/bagged.jpg
 parts:
   pretty_name: Parts
   name: parts
