@@ -23,7 +23,7 @@ pub struct Comment {
 
 fn get_paging(page: Option<i64>, comment_count: i64) -> (i64, Paging) {
     let mut max = comment_count / PAGE_SIZE;
-    if max % PAGE_SIZE != 0 {
+    if comment_count % PAGE_SIZE != 0 {
         max += 1
     }
 
