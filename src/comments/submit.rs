@@ -1,11 +1,11 @@
+use super::{db, view};
+use crate::{util, DbConn};
+use anyhow::Result;
+use chrono::Duration;
+use diesel::result::Error as QueryError;
 use rocket::request::Form;
 use rocket::response::{Debug, Flash, Redirect};
 use std::net::SocketAddr;
-use crate::DbConn;
-use anyhow::Result;
-use chrono::{Duration};
-use diesel::result::Error as QueryError;
-use super::{db, view};
 
 fn validate_submission(comment: &mut Submission) -> bool {
     comment.author = comment.author.trim().chars().take(30).collect();
@@ -15,16 +15,20 @@ fn validate_submission(comment: &mut Submission) -> bool {
 }
 
 #[post("/comments/post", data = "<submission_form>")]
-pub fn post(
-    address: SocketAddr,
+pub async fn post(
+    rocket_addr: SocketAddr,
+    real_ip: Option<util::RealIp>,
     submission_form: Form<Submission>,
     conn: DbConn,
 ) -> Result<Flash<Redirect>, Debug<QueryError>> {
-    let ip = address.to_string();
+    let ip = match real_ip {
+        Some(ip) => ip.to_string(),
+        None => rocket_addr.to_string()
+    };
     let redirect = Redirect::to(uri!(view::index: _));
 
     // Check that the IP doesn't have > 3 posts in the last minute
-    if 3 <= db::count_recent_from(Duration::minutes(1), &ip, &conn)? {
+    if 3 <= db::count_recent_from(Duration::minutes(1), ip.clone(), &conn).await? {
         return Ok(Flash::error(redirect, "Slow down, cowboy."));
     }
 
@@ -41,7 +45,7 @@ pub fn post(
         author: submission.author,
         content: submission.content,
     };
-    db::push_comment(comment, &conn)?;
+    db::push_comment(comment, &conn).await?;
 
     if submission.sell_soul {
         Ok(Flash::success(
@@ -62,5 +66,3 @@ pub struct Submission {
     pub content: String,
     pub sell_soul: bool,
 }
-
-

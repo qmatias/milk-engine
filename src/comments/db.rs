@@ -1,4 +1,5 @@
 use crate::schema::comments::{self, dsl};
+use crate::DbConn;
 use chrono::{Duration, NaiveDateTime, Utc};
 use diesel::{self, prelude::*};
 use std::ops::Sub;
@@ -23,35 +24,48 @@ pub struct QueryComment {
 }
 
 /// Gets all the posts sent in the last `time_frame` from `address`
-pub fn count_recent_from(
+pub async fn count_recent_from(
     time_frame: Duration,
-    ip: &str,
-    conn: &SqliteConnection,
+    ip: String,
+    conn: &DbConn,
 ) -> QueryResult<i64> {
     let cutoff = Utc::now().naive_utc().sub(time_frame);
-    dsl::comments
-        .filter(dsl::ip_address.eq(ip))
-        .filter(dsl::post_time.ge(cutoff))
-        .count()
-        .get_result(conn)
+    conn.run(move |c| {
+        dsl::comments
+            .filter(dsl::ip_address.eq(ip))
+            .filter(dsl::post_time.ge(cutoff))
+            .count()
+            .get_result(c)
+    })
+    .await
 }
 
 /// Add a post to the database, returns true for success, false for error
-pub fn push_comment(comment: InsertComment, conn: &SqliteConnection) -> QueryResult<()> {
-    diesel::insert_into(comments::table)
-        .values(&comment)
-        .execute(conn)
-        .map(|_| ())
+pub async fn push_comment(comment: InsertComment, conn: &DbConn) -> QueryResult<()> {
+    conn.run(move |c| {
+        diesel::insert_into(comments::table)
+            .values(&comment)
+            .execute(c)
+            .map(|_| ())
+    })
+    .await
 }
 
-pub fn count_comments(conn: &SqliteConnection) -> QueryResult<i64> {
-    dsl::comments.count().get_result(conn)
+pub async fn count_comments(conn: &DbConn) -> QueryResult<i64> {
+    conn.run(move |c| dsl::comments.count().get_result(c)).await
 }
 
-pub fn list_comments(start: i64, count: i64, conn: &SqliteConnection) -> QueryResult<Vec<QueryComment>> {
-    dsl::comments
-        .order(dsl::post_time.desc())
-        .offset(start)
-        .limit(count)
-        .load(conn)
+pub async fn list_comments(
+    start: i64,
+    count: i64,
+    conn: &DbConn,
+) -> QueryResult<Vec<QueryComment>> {
+    conn.run(move |c| {
+        dsl::comments
+            .order(dsl::post_time.desc())
+            .offset(start)
+            .limit(count)
+            .load(c)
+    })
+    .await
 }

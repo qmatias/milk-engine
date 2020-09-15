@@ -1,4 +1,4 @@
-#![feature(proc_macro_hygiene, decl_macro, exclusive_range_pattern, bool_to_option, clamp)]
+#![feature(proc_macro_hygiene, decl_macro, exclusive_range_pattern, bool_to_option, clamp, never_type)]
 #![warn(clippy::pedantic, clippy::cargo)]
 #![allow(clippy::non_ascii_literal)] // it's 2020
 #![allow(clippy::cargo_common_metadata)] // not a crate

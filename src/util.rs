@@ -2,7 +2,9 @@ use crate::{Ads, DbConn, Products};
 use anyhow::{Context as ErrorContext, Result};
 use chrono::Duration;
 use log::error;
+use rocket::async_trait;
 use rocket::fairing::Fairing;
+use rocket::request::{FromRequest, Outcome, Request};
 use rocket::{Cargo, Rocket};
 use rocket_contrib::templates::handlebars::handlebars_helper;
 use rocket_contrib::templates::Template;
@@ -27,7 +29,7 @@ pub fn build_template_engine() -> impl Fairing {
 
 /// adhoc fairing to run diesel migrations
 pub async fn attach_db_migrations(mut rocket: Rocket) -> Result<Rocket, Rocket> {
-    match run_db_migrations(rocket.inspect().await) {
+    match run_db_migrations(rocket.inspect().await).await {
         Ok(()) => Ok(rocket),
         Err(e) => {
             error!("Error while running database migrations: {:?}", e);
@@ -36,9 +38,13 @@ pub async fn attach_db_migrations(mut rocket: Rocket) -> Result<Rocket, Rocket> 
     }
 }
 
-fn run_db_migrations(cargo: &Cargo) -> Result<()> {
-    let conn = DbConn::get_one(cargo).context("Failed to get a connection from pool")?;
-    embedded_migrations::run(&*conn).context("Failed to run database migrations")?;
+async fn run_db_migrations(cargo: &Cargo) -> Result<()> {
+    DbConn::get_one(&cargo)
+        .await
+        .context("Failed to get a connection from pool")?
+        .run(|c| embedded_migrations::run(c))
+        .await
+        .context("Failed to run database migrations")?;
     Ok(())
 }
 
@@ -93,5 +99,26 @@ pub fn format_duration(d: Duration) -> String {
         format!("{}d", d.num_days())
     } else {
         format!("{}w", d.num_weeks())
+    }
+}
+
+pub struct RealIp(pub String);
+
+impl RealIp {
+    pub fn to_string(self) -> String {
+        self.0
+    }
+}
+
+#[async_trait]
+impl<'a, 'r> FromRequest<'a, 'r> for RealIp {
+    type Error = !;
+
+    async fn from_request(request: &'a Request<'r>) -> Outcome<Self, Self::Error> {
+        let keys = request.headers().get("X-Real-IP").collect::<Vec<_>>();
+        match keys[..] {
+            [addr] => Outcome::Success(RealIp(addr.to_owned())),
+            _ => Outcome::Forward(())
+        }
     }
 }

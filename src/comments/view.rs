@@ -58,17 +58,17 @@ struct ListingContext {
 }
 
 #[get("/comments?<page>")]
-pub fn index(
+pub async fn index(
     page: Option<i64>,
     conn: DbConn,
-    message: Option<FlashMessage>,
+    message: Option<FlashMessage<'_, '_>>,
 ) -> Result<Template, Debug<QueryError>> {
     let now = Utc::now();
 
-    let comment_count = db::count_comments(&conn)?;
+    let comment_count = db::count_comments(&conn).await?;
     let (index, paging) = get_paging(page, comment_count);
 
-    let comments = db::list_comments(index * PAGE_SIZE, PAGE_SIZE, &conn)?
+    let comments = db::list_comments(index * PAGE_SIZE, PAGE_SIZE, &conn).await?
         .into_iter()
         .map(|c| Comment {
             time_passed: time_since_posted(now, c.post_time),
