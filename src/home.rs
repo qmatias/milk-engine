@@ -23,8 +23,8 @@ pub fn index(ads: State<Ads>) -> Template {
     Template::render(
         "index",
         HomeContext {
-            title: "Cum Engineers",
-            desc: "Cum Engineers - Home of the Cum Engine",
+            title: "Milk Engineers",
+            desc: "Milk Engineers - Home of the Milk Engine",
             image: "icon.png",
             ads: ads.inner(),
         },

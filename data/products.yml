@@ -3,60 +3,60 @@ engines:
   pretty_name: Engines
   name: engines
   description: Our top quality engines will never let you down.
-  image: engine.png
+  image: engine.gif
   items:
-    - name: CumBeater™ 8000
+    - name: MilkBeater™ 8000
       price: 749.99
       horsepower: 200
-      description: A good choice all round, you can't go wrong with our CumBeater™ 8000.
-      image: engines/cumbeater-8000.jpg
-    - name: CumBeater™ 6000
+      description: A good choice all round, you can't go wrong with our MilkBeater™ 8000.
+      image: engines/milkbeater-8000.jpg
+    - name: MilkBeater™ 6000
       price: 549.99
       horsepower: 120
-      description: Our older but still very potent CumBeater™, for those on a budget.
-      image: engines/cumbeater-6000.jpg
-    - name: CumCannon™ Mini X
+      description: Our older but still very potent MilkBeater™, for those on a budget.
+      image: engines/milkbeater-6000.jpg
+    - name: MilkCannon™ Mini X
       price: 1200
       horsepower: 120
-      description: Our Anniversary edition CumCannon™.
-      image: engines/cumcannon-mini.jpg
-    - name: CumBeater™ Personal
+      description: Our Anniversary edition MilkCannon™.
+      image: engines/milkcannon-mini.jpg
+    - name: MilkBeater™ Personal
       price: 50
       horsepower: 5
-      description: A very affordable Personal CumBeater™ for household tasks.
-      image: engines/cumbeater-personal.png
-cum:
-  pretty_name: Cum
-  name: cum
-  description: Organic Cum, straight from the farm, to you.
-  image: cumjar.png
+      description: A very affordable Personal MilkBeater™ for household tasks.
+      image: engines/milkbeater-personal.png
+milk:
+  pretty_name: Milk
+  name: milk
+  description: Organic Milk, straight from the farm, to you.
+  image: milkjar.gif
   items:
-    - name: Standard Cum
+    - name: Standard Milk
       price: 20
-      description: Standard Cum from our ejaculatory factories, guaranteed to be Grade AA or above.
-      image: cum/standard.jpg
-    - name: Gold Star Premium™ Cum
+      description: Standard Milk from our milking factories, guaranteed to be Grade AA or above.
+      image: milk/standard.jpg
+    - name: Gold Star Premium™ Milk
       price: 2500
-      description: Gold Star Premium Cum, comes boxed with certificate of authenticity.
-      image: cum/boxed.jpg
-    - name: Bottled Cum
+      description: Gold Star Premium Milk, comes boxed with certificate of authenticity.
+      image: milk/boxed.jpg
+    - name: Bottled Milk
       price: 5
       unit: Bottle
-      description: Bottled Cum for your convenience.
-      image: cum/bottled.jpg
-    - name: Bagged Cum
+      description: Bottled Milk for your convenience.
+      image: milk/bottled.jpg
+    - name: Bagged Milk
       price: 40
       unit: Bag
-      description: Bagged Cum. Don't let it's appearance fool you -- this cum is as pure as it gets. Bagged directly after ejaculation and shipped straight to you -- no shenanigans.
-      image: cum/bagged.jpg
-    - name: Nonfat Cum
+      description: Bagged Milk. Don't let it's appearance fool you -- this milk is as pure as it gets. Bagged directly after milking and shipped straight to you -- no shenanigans.
+      image: milk/bagged.jpg
+    - name: Nonfat Milk
       price: 30
-      description: Nonfat Cum for our customers on a diet. 100% Quality, 69% Fat.
-      image: cum/nonfat.png
+      description: Nonfat Milk for our customers on a diet. 100% Quality, 69% Fat.
+      image: milk/nonfat.png
 parts:
   pretty_name: Parts
   name: parts
-  description: Expert tools for repair of our Cum Engines.
+  description: Expert tools for repair of our Milk Engines.
   image: part.png
   items:
     - name: Repair Kit

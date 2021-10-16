@@ -7,8 +7,8 @@ pub fn index() -> Template {
     Template::render(
         "about",
         TemplateContext {
-            title: "About the Cum Engineers",
-            desc: "Cum Engineers - About the Cum Engineers",
+            title: "About the Milk Engineers",
+            desc: "Milk Engineers - About the Milk Engineers",
             image: "sale.jpg",
         },
     )

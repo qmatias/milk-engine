@@ -9,4 +9,4 @@ CREATE TABLE comments (
     from_engineer BOOLEAN NOT NULL DEFAULT 0
 );
 
-INSERT INTO comments (content, author, from_engineer) VALUES ("Tell us how you use your Cum Engine!", "Dr. Zaun Mundo, PhD", true);
+INSERT INTO comments (content, author, from_engineer) VALUES ("Tell us how you use your Milk Engine!", "Dr. Zaun Mundo, PhD", true);

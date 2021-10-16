@@ -1,13 +1,13 @@
 ---
-- pretty_name: Cum Engines
-  desc: Take a look at our luxury Cum Engines. These bad boys run only off natural semen -- no more dangerous and harmful gasoline or oil required.
+- pretty_name: Milk Engines
+  desc: Take a look at our luxury Milk Engines. These bad boys run only off natural milk -- no more dangerous and harmful gasoline or oil required.
   image: engine.png
   link: /shop/engines
-- pretty_name: Cum
-  desc:  Getting to that age where you can't provide for yourself (and your cum engine)? Not to worry! Through a complex and painful process named "electroejaculation", each one of our Cum Farms can produce almost 200 liters (almost 52 Gallons for you american scum) of semen a day, which is then sold wholesale to you!
-  image: cumjar.png
-  link: /shop/cum
-- pretty_name: Cum Engine Parts
-  desc:  Did your Cum Engine break? Sucks to suck, because all sales are final. However, in the event that you know how to repair an engine or think you can figure it out from youtube (you can't), you can buy the parts you will need to do perform the repair right here!
+- pretty_name: Milk
+  desc:  Getting to that age where you can't provide for yourself (and your milk engine)? Not to worry! Through a complex and painful process named "electro-milking", each one of our Milk Farms can produce almost 200 liters (almost 52 Gallons for you americans!) of milk a day, which is then sold wholesale to you!
+  image: milkjar.png
+  link: /shop/milk
+- pretty_name: Milk Engine Parts
+  desc:  Did your Milk Engine break? Sucks to suck, because all sales are final. However, in the event that you know how to repair an engine or think you can figure it out from youtube (you can't), you can buy the parts you will need to do perform the repair right here!
   image: part.png
   link: /shop/parts

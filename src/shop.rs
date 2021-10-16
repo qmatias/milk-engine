@@ -40,7 +40,7 @@ pub struct Product {
     #[serde(default = "default_desc")]
     pub description: String,
 
-    /// Unit, displayed for cum listings
+    /// Unit, displayed for milk listings
     #[serde(default = "default_unit")]
     pub unit: String,
 
@@ -79,9 +79,9 @@ pub fn index(products: State<Products>) -> Template {
     Template::render(
         "shop_overview",
         ShopOverviewContext {
-            title: "The CumShop™",
+            title: "The MilkShop™",
             image: "sale.jpg",
-            desc: "Our CumShop™, where you can shop for all of our products",
+            desc: "Our MilkShop™, where you can shop for all of our products",
             categories: &products,
         },
     )
@@ -93,7 +93,7 @@ pub fn category(category_uri: String, products: State<Products>) -> Option<Templ
     Some(Template::render(
         "shop_category",
         ShopCategoryContext {
-            title: format!("CumShop™ - {}", &category.pretty_name),
+            title: format!("MilkShop™ - {}", &category.pretty_name),
             image: category.image.as_deref(),
             desc: &category.description,
             categories: &products,

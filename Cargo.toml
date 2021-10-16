@@ -1,7 +1,7 @@
 [package]
-name = "cum-engine"
+name = "milk-engine"
 version = "0.1.0"
-repository = "https://github.com/qmatias/cum-engine"
+repository = "https://github.com/qmatias/milk-engine"
 readme = "README.md"
 authors = ["Matias Kotlik <mdkotlik@gmail.com>"]
 edition = "2018"

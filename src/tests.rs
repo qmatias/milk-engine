@@ -9,7 +9,7 @@ fn test_routes() {
         "/",
         "/shop",
         "/shop/engines",
-        "/shop/cum",
+        "/shop/milk",
         "/shop/parts",
         "/about",
         "/comments",

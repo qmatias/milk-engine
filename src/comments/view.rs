@@ -87,7 +87,7 @@ pub async fn index(
                 name: util::to_bulma_class(f.name()),
                 msg: f.msg().to_owned(),
             }),
-            desc: "Cum Engineers - Message Board",
+            desc: "Milk Engineers - Message Board",
             paging,
             comments,
         },
